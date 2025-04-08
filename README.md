@@ -309,14 +309,53 @@ follows.
 - **schedalg**: the scheduling algorithm to be performed. Must be one of FIFO
   or SFF. Default: FIFO.
 
-For example, you could run your program as:
+For example, you could run your server as:
 ```
-prompt> server -d . -p 8003 -t 8 -b 16 -s SFF
+prompt> ./wserver -d . -p 8003 -t 8 -b 16 -s SFF
 ```
 
 In this case, your web server will listen to port 8003, create 8 worker threads for
 handling HTTP requests, allocate 16 buffers for connections that are currently
 in progress (or waiting), and use SFF scheduling for arriving requests.
+
+You'll also need to make requests to your server. A simple option is
+to use a web browser. If you started your server as above, you could
+type in the address bar:
+```
+localhost:8003/example.html
+```
+
+which will request the `example.html` file from the server. This file
+must be in the same location as `wserver`. If you want to request the
+`spin.cgi` program, you could instead do:
+```
+localhost:8003/spin.cgi?5
+```
+
+which will spin for 5 seconds before sending the final response.
+
+Alternatively, you can make requests with the provided client. In a
+separate terminal, you can run:
+```
+prompt> ./wclient localhost 8003 /example.html
+```
+
+to request the `example.html` file. 
+
+One important test is that you can make two or more requests
+simultaneously, and they won't block each other. For example, if I run
+the command:
+
+```
+prompt> ./wclient localhost 8003 /spin.cgi?10
+```
+
+and then immediately (in another terminal) run:
+```
+prompt> ./wclient localhost 8003 /example.html
+```
+
+the request for `example.html` should get a response before the one for `spin.cgi`.
 
 # Source Code Overview
 
