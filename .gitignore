@@ -1,0 +1,9 @@
+# Build products
+*.o
+wserver
+wclient
+spin.cgi
+a.out
+
+# Editor backups
+*~

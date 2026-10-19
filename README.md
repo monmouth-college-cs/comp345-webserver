@@ -1,3 +1,7 @@
+# COMP345 Project 3: Concurrent Web Server
+
+Due: November 18, 2026 at 11:59 pm
+
 # Overview
 
 [Note: This project is heavily based on a similar project by the OSTEP
@@ -16,7 +20,7 @@ The goals of this project are:
 
 Useful reading from [OSTEP](http://ostep.org) includes:
 - [Intro to threads](http://pages.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf)
-- [Using locks](http://pages.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf)
+- [Using locks](http://pages.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf)
 - [Producer-consumer relationships](http://pages.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf)
 - [Server concurrency architecture](http://pages.cs.wisc.edu/~remzi/OSTEP/threads-events.pdf)
 
@@ -41,7 +45,7 @@ responds with the requested content and closes the connection. The browser
 reads the content and displays it on the screen.
 
 HTTP is built on top of the **TCP/IP** protocol suite provided by the
-operating system. Together, TPC and IP ensure that messages are routed to
+operating system. Together, TCP and IP ensure that messages are routed to
 their correct destination, get from source to destination reliably in the face
 of failure, and do not overly congest the network by sending too many messages
 at once, among other features. To learn more about networks, take a networking
@@ -159,7 +163,7 @@ fun).
 
 Helper functions are provided to simplify error checking.  A wrapper calls the
 desired function and immediately terminate if an error occurs. The wrappers
-are found in the file `io-helper.h`); more about this below.  One should
+are found in the file `io_helper.h`); more about this below.  One should
 always check error codes, even if all you do in response is exit; dropping
 errors silently is **BAD C PROGRAMMING** and should be avoided at all costs.
 
@@ -399,3 +403,18 @@ and synchronizing threads: `pthread_create()`, `pthread_mutex_init()`,
 `pthread_cond_wait()`, `pthread_cond_signal()`. To find information on these
 library routines, read the man pages (RTFM). 
 
+# Submitting
+
+Commit early and often, and push your work to the `main` branch of
+this repository. Whatever is on `main` at the deadline is what I grade.
+Make sure `make` builds your server from a clean checkout, and that you
+`git add` any new source files you create -- if it isn't committed, I
+can't see it.
+
+**Build and test on Linux** (WSL should work fine). That is where your
+server will be graded.
+
+This repository may or may not have a `feedback` branch. **Leave it
+alone**: do not commit to it, delete it, or merge anything into it. I
+will open a pull request from `main` into `feedback` so I can leave
+grading comments on your diff. Never merge that pull request.
