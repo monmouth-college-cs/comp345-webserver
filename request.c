@@ -6,7 +6,6 @@
 // Hopefully this is not a problem ... :)
 //
 
-#define MAXBUF (8192)
 #define MAXFILETYPE (32)
 
 void request_error(int fd, char *cause, char *errnum, char *shortmsg, char *longmsg) {

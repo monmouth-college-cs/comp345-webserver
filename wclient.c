@@ -23,8 +23,6 @@
 
 #include "io_helper.h"
 
-#define MAXBUF (8192)
-
 //
 // Send an HTTP request for the specified file 
 //
