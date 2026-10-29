@@ -7,12 +7,13 @@
 //
 
 #define MAXBUF (8192)
+#define MAXFILETYPE (32)
 
 void request_error(int fd, char *cause, char *errnum, char *shortmsg, char *longmsg) {
     char buf[MAXBUF], body[MAXBUF];
     
     // Create the body of error message first (have to know its length for header)
-    sprintf(body, ""
+    snprintf(body, MAXBUF, ""
 	    "<!doctype html>\r\n"
 	    "<head>\r\n"
 	    "  <title>OSTEP WebServer Error</title>\r\n"
@@ -116,7 +117,7 @@ void request_serve_dynamic(int fd, char *filename, char *cgiargs) {
 
 void request_serve_static(int fd, char *filename, int filesize) {
     int srcfd;
-    char *srcp, filetype[MAXBUF], buf[MAXBUF];
+    char *srcp, filetype[MAXFILETYPE], buf[MAXBUF];
     
     request_get_filetype(filename, filetype);
     srcfd = open_or_die(filename, O_RDONLY, 0);

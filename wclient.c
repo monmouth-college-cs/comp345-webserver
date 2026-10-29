@@ -19,6 +19,8 @@
 // When we test your server, we will be using modifications to this client.
 //
 
+#include <limits.h>
+
 #include "io_helper.h"
 
 #define MAXBUF (8192)
@@ -28,13 +30,12 @@
 //
 void client_send(int fd, char *filename) {
     char buf[MAXBUF];
-    char hostname[MAXBUF];
+    char hostname[HOST_NAME_MAX + 1];
     
-    gethostname_or_die(hostname, MAXBUF);
+    gethostname_or_die(hostname, sizeof(hostname));
     
     /* Form and send the HTTP request */
-    sprintf(buf, "GET %s HTTP/1.1\n", filename);
-    sprintf(buf, "%shost: %s\n\r\n", buf, hostname);
+    snprintf(buf, MAXBUF, "GET %s HTTP/1.1\nhost: %s\n\r\n", filename, hostname);
     write_or_die(fd, buf, strlen(buf));
 }
 
