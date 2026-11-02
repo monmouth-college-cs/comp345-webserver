@@ -49,7 +49,11 @@ int open_client_fd(char *hostname, int port) {
 int open_listen_fd(int port) {
     // Create a socket descriptor 
     int listen_fd;
-    if ((listen_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+    // RSU 2026-11-02: added SOCK_CLOEXEC so that process children
+    // (e.g., after fork() + exec()) will close their copy of the
+    // socket. Otherwise the child will keep it open (and thus the port
+    // bound) if the parent finishes first.
+    if ((listen_fd = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0)) < 0) {
 	fprintf(stderr, "socket() failed\n");
 	return -1;
     }

@@ -36,6 +36,8 @@ typedef struct sockaddr sockaddr_t;
     assert(execve(filename, argv, envp) == 0); 
 #define wait_or_die(status) \
     ({ pid_t pid = wait(status); assert(pid >= 0); pid; })
+#define waitpid_or_die(pid) \
+    ({ pid_t ret = waitpid(pid, NULL, 0); assert(ret >= 0); ret; })
 #define gethostname_or_die(name, len) \
     ({ int rc = gethostname(name, len); assert(rc == 0); rc; })
 #define setenv_or_die(name, value, overwrite) \
@@ -72,8 +74,13 @@ typedef struct sockaddr sockaddr_t;
     { assert(bind(sockfd, my_addr, addrlen) >= 0); }
 #define listen_or_die(s, backlog) \
     { assert(listen(s,  backlog) >= 0); }
+// RSU 2026-11-02: switched to accept4 with SOCK_CLOEXEC so that
+// process children (e.g., after fork() + exec()) will close their
+// copy of the socket. Otherwise the child will copy each open socket
+// (potentially unrelated ones from other worker threads) and keep it
+// open.
 #define accept_or_die(s, addr, addrlen) \
-    ({ int rc = accept(s, addr, addrlen); assert(rc >= 0); rc; })
+    ({ int rc = accept4(s, addr, addrlen, SOCK_CLOEXEC); assert(rc >= 0); rc; })
 #define connect_or_die(sockfd, serv_addr, addrlen) \
     { assert(connect(sockfd, serv_addr, addrlen) >= 0); }
 #define gethostbyname_or_die(name) \

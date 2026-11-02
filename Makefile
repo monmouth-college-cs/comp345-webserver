@@ -3,7 +3,7 @@
 # To remove files, type "make clean"
 
 CC = gcc
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g -D_GNU_SOURCE # last for accept4
 OBJS = wserver.o wclient.o request.o io_helper.o 
 
 .SUFFIXES: .c .o 
